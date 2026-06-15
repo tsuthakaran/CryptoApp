@@ -45,9 +45,6 @@ const AdminDashboard = () => {
             <Link to="/Portfolio">W4LLET</Link>
           </Button>
         </div>
-        <Button variant="ghost" className="text-white">
-          <Link to="/CustomerSupport">Customer Support</Link>
-        </Button>
       </div>
 
       <div className="flex-1 flex overflow-hidden">

@@ -7,7 +7,6 @@ export const TIME_RANGE_CONFIG = {
       interval: '1m',
       limit: maxLength,
       duration: 60 * 60 * 1000,
-      xAxisFormat: 'mm:ss',
       tickInterval: 20,
       tickFormatter: (date: string) => format(parseISO(date), 'HH:mm:ss')
     },
@@ -15,7 +14,6 @@ export const TIME_RANGE_CONFIG = {
       interval: '1m',
       limit: maxLength,
       duration: 24 * 60 * 60 * 1000,
-      xAxisFormat: 'HH:mm',
       tickInterval: 10,
       tickFormatter: (date: string) => format(parseISO(date), 'HH:mm')
     },
@@ -23,7 +21,6 @@ export const TIME_RANGE_CONFIG = {
       interval: '4h',
       limit: maxLength,
       duration: 7 * 24 * 60 * 60 * 1000,
-      xAxisFormat: 'MMM d',
       tickInterval: 5,
       tickFormatter: (date: string) => format(parseISO(date), 'dd')
     },
@@ -31,7 +28,6 @@ export const TIME_RANGE_CONFIG = {
       interval: '12h',
       limit: maxLength,
       duration: 14 * 24 * 60 * 60 * 1000,
-      xAxisFormat: 'MMM d',
       tickInterval: 2,
       tickFormatter: (date: string) => format(parseISO(date), 'MMM dd')
     },
@@ -39,7 +35,6 @@ export const TIME_RANGE_CONFIG = {
       interval: '1d',
       limit: maxLength,
       duration: 30 * 24 * 60 * 60 * 1000,
-      xAxisFormat: 'd MMM',
       tickInterval: 2,
       tickFormatter: (date: string) => {
         const parsedDate = parseISO(date);
@@ -50,7 +45,6 @@ export const TIME_RANGE_CONFIG = {
       interval: '1w',
       limit: maxLength,
       duration: 365 * 24 * 60 * 60 * 1000,
-      xAxisFormat: 'MMM dd',
       tickInterval: 7,
       tickFormatter: (date: string) => format(parseISO(date), 'MMM dd')
     },
@@ -58,7 +52,6 @@ export const TIME_RANGE_CONFIG = {
       interval: '1M',
       limit: maxLength,
       duration: 50 * 365 * 24 * 60 * 60 * 1000,
-      xAxisFormat: 'MMM yyyy',
       tickInterval: 12,
       tickFormatter: (date: string) => format(parseISO(date), 'MMM yyyy')
     }

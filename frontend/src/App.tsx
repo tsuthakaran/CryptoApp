@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React from "react";
-import NavBarLanding from "./components/auth/NavBarLanding.tsx";
 import LandingPage from "./components/auth/LandingPage.tsx";
 import Login from "./components/auth/Login.tsx";
 import Register from "./components/auth/Register.tsx";
@@ -23,7 +22,6 @@ const App: React.FC = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/Forgot" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/NavBarLanding" element={<NavBarLanding />} />
             <Route path="/Login" element={<Login />} />
             <Route path="/Register" element={<Register />} />
             <Route path="/Portfolio?" element={<Portfolio />} />

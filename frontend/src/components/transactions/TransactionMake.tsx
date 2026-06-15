@@ -41,9 +41,7 @@ const TransactionMake = ({ onSuccess, initialTab }: { onSuccess?: () => void; in
   const [addressTouched, setAddressTouched] = useState(false);
   const [swapTarget, setSwapTarget] = useState("Ethereum");
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [warningMessage, setWarningMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [warningAcknowledged, setWarningAcknowledged] = useState(false);
 
   const { balances } = useWallet();
   const prices = useTickerPrices(CRYPTO_SYMBOLS);
@@ -82,21 +80,8 @@ const TransactionMake = ({ onSuccess, initialTab }: { onSuccess?: () => void; in
     [assetCode]
   );
 
-  const getReliabilityScore = async (input: string): Promise<number | null> => {
-    const unreliableAssets: Record<string, number> = {
-      Dogecoin: 25, Matic: 45, Algorand: 30, Fantom: 40,
-      "Internet Computer": 35, Uniswap: 45, Stellar: 40,
-    };
-    if (input.startsWith("scam")) return 20;
-    if (input.startsWith("unknown")) return null;
-    if (unreliableAssets[input]) return unreliableAssets[input];
-    return 85;
-  };
-
   const resetConfirmation = () => {
     setShowConfirmation(false);
-    setWarningMessage("");
-    setWarningAcknowledged(false);
   };
 
   const switchTab = (t: TransactionType) => {
@@ -115,7 +100,7 @@ const TransactionMake = ({ onSuccess, initialTab }: { onSuccess?: () => void; in
     }
   };
 
-  const handleReview = async () => {
+  const handleReview = () => {
     const amountNum = parseFloat(amount);
 
     if ((type === "Send" || type === "Swap") && amountNum > balance) {
@@ -130,26 +115,6 @@ const TransactionMake = ({ onSuccess, initialTab }: { onSuccess?: () => void; in
     }
 
     setErrorMessage("");
-    setWarningMessage("");
-
-    if (type === "Send") {
-      const score = await getReliabilityScore(address);
-      if (score === null) {
-        setWarningMessage("We were unable to verify this recipient. Make sure you trust this address before confirming.");
-      } else if (score < 50) {
-        setWarningMessage(`This address has a low reliability score (${score}/100). Proceed with caution.`);
-      }
-    }
-
-    if (type === "Swap") {
-      const score = await getReliabilityScore(swapTarget);
-      if (score === null) {
-        setWarningMessage("We were unable to verify the reliability of this target asset.");
-      } else if (score < 50) {
-        setWarningMessage(`The target asset "${swapTarget}" has a low reliability score (${score}/100).`);
-      }
-    }
-
     setShowConfirmation(true);
   };
 
@@ -193,8 +158,6 @@ const TransactionMake = ({ onSuccess, initialTab }: { onSuccess?: () => void; in
     !amount ||
     parseFloat(amount) <= 0 ||
     ((type === "Send" || type === "Request") && !address);
-
-  const showFiatGroup = true;
 
   return (
     <div className="text-[#F0E7A1] px-6 py-6 flex flex-col gap-5 w-full">
@@ -257,15 +220,13 @@ const TransactionMake = ({ onSuccess, initialTab }: { onSuccess?: () => void; in
                     </option>
                   ))}
                 </optgroup>
-                {showFiatGroup && (
-                  <optgroup label="Cash & Stablecoins" className="bg-[#111]">
-                    {fiatAssets.map((a) => (
-                      <option key={a.symbol} value={a.name} className="bg-[#111]">
-                        {a.name} ({a.symbol})
-                      </option>
-                    ))}
-                  </optgroup>
-                )}
+                <optgroup label="Cash & Stablecoins" className="bg-[#111]">
+                  {fiatAssets.map((a) => (
+                    <option key={a.symbol} value={a.name} className="bg-[#111]">
+                      {a.name} ({a.symbol})
+                    </option>
+                  ))}
+                </optgroup>
               </select>
               <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none" />
             </div>
@@ -383,21 +344,6 @@ const TransactionMake = ({ onSuccess, initialTab }: { onSuccess?: () => void; in
                 )}
               </div>
 
-              {warningMessage && (
-                <div className="bg-amber-400/8 border border-amber-400/20 rounded-lg p-3 flex flex-col gap-2.5">
-                  <p className="text-amber-400 text-xs leading-relaxed">{warningMessage}</p>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={warningAcknowledged}
-                      onChange={(e) => setWarningAcknowledged(e.target.checked)}
-                      className="accent-amber-400"
-                    />
-                    <span className="text-xs text-amber-300/80">I understand the risks and want to proceed</span>
-                  </label>
-                </div>
-              )}
-
               <div className="flex gap-2">
                 <button
                   onClick={resetConfirmation}
@@ -407,8 +353,7 @@ const TransactionMake = ({ onSuccess, initialTab }: { onSuccess?: () => void; in
                 </button>
                 <button
                   onClick={handleConfirm}
-                  disabled={warningMessage !== "" && !warningAcknowledged}
-                  className="flex-1 py-2.5 bg-[#F0E7A1] text-black font-semibold text-sm rounded-xl hover:bg-[#F0E7A1]/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="flex-1 py-2.5 bg-[#F0E7A1] text-black font-semibold text-sm rounded-xl hover:bg-[#F0E7A1]/90 transition-colors"
                 >
                   Confirm
                 </button>

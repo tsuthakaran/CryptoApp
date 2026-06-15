@@ -39,10 +39,6 @@ export class CreateTransactionDto {
   recipient?: string;
 
   @IsOptional()
-  @IsString()
-  sender?: string;
-
-  @IsOptional()
   @IsNumber()
   @Min(0)
   fee?: number;
